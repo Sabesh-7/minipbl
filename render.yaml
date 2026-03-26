@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: smart-rule-engine-api
+    runtime: docker
+    rootDir: backend
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: APP_CORS_ALLOWED_ORIGINS
+        sync: false
