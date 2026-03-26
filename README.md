@@ -118,24 +118,32 @@ Postman can directly import:
 
 ## 6. Deployment Guide
 
-## A. Deploy Backend to Render
+## A. Deploy As One Site on Render (Recommended)
+
+This project supports single-URL deployment where:
+
+- React frontend is built and embedded into Spring Boot static resources
+- Backend APIs are served under the same domain
+
+Steps:
 
 1. Create a new Web Service in Render.
 2. Connect this repository.
-3. Use Docker runtime with `backend` as root directory.
-4. Render will use `backend/Dockerfile`.
-5. Set backend env vars listed above.
-6. Deploy and note your backend URL.
+3. Use Docker runtime with repo root as build root (`.`).
+4. Render will use root `Dockerfile`.
+5. Set backend env vars listed above (`SPRING_PROFILES_ACTIVE`, `DB_*`, `APP_CORS_ALLOWED_ORIGINS`).
+6. Deploy.
+7. Verify:
+   - `https://<your-render-url>/` (frontend)
+   - `https://<your-render-url>/api/v1/health` (backend)
+   - `https://<your-render-url>/swagger-ui/index.html` (API docs)
 
-Optional: Use `render.yaml` for Infra as Code setup.
+## B. Alternate Split Deployment (Render + Vercel)
 
-## B. Deploy Frontend to Vercel
-
-1. Import repository in Vercel.
-2. Set project root to `frontend`.
-3. Add env var `VITE_API_URL` with your Render backend URL.
-4. Deploy.
-5. Verify route refresh works (configured via `frontend/vercel.json`).
+1. Deploy backend on Render (`backend` Docker build).
+2. Deploy frontend on Vercel (`frontend` root).
+3. Set `VITE_API_URL` to backend URL.
+4. Ensure backend CORS includes your Vercel domain.
 
 ## C. CI/CD Pipeline
 
@@ -184,6 +192,6 @@ Use this structure during final viva:
 
 ## 9. Project URLs (fill before submission)
 
-- Frontend (Vercel): `https://<your-frontend>.vercel.app`
-- Backend (Render): `https://<your-backend>.onrender.com`
-- Swagger: `https://<your-backend>.onrender.com/swagger-ui/index.html`
+- One-site Render URL: `https://<your-app>.onrender.com`
+- Health: `https://<your-app>.onrender.com/api/v1/health`
+- Swagger: `https://<your-app>.onrender.com/swagger-ui/index.html`
