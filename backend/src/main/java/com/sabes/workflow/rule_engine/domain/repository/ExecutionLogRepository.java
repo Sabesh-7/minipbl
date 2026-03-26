@@ -18,10 +18,10 @@ public interface ExecutionLogRepository extends JpaRepository<ExecutionLog, Long
 
     List<ExecutionLog> findTop5ByOrderByExecutedAtDesc();
 
-    @Query("SELECT e FROM ExecutionLog e WHERE " +
-           "(:search IS NULL OR LOWER(e.ruleName) LIKE LOWER(CONCAT('%', CAST(:search AS text), '%'))) AND " +
+    @Query(value = "SELECT * FROM execution_logs e WHERE " +
+           "(:search IS NULL OR LOWER(e.rule_name) LIKE LOWER(CONCAT('%', CAST(:search AS TEXT), '%'))) AND " +
            "(:success IS NULL OR e.success = :success) " +
-           "ORDER BY e.executedAt DESC")
+           "ORDER BY e.executed_at DESC", nativeQuery = true)
     Page<ExecutionLog> findWithFilters(
             @Param("search") String search,
             @Param("success") Boolean success,
