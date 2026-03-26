@@ -25,9 +25,10 @@ public class ExecutionLogServiceImpl implements ExecutionLogService {
         if ("success".equalsIgnoreCase(status)) successFilter = true;
         else if ("failed".equalsIgnoreCase(status)) successFilter = false;
 
-        String searchParam = (search != null && !search.isBlank())
-            ? search.trim().toLowerCase()
-            : null;
+String searchParam = null;
+        if (search != null && !search.isBlank()) {
+            searchParam = "%" + search.trim() + "%";
+        }
 
         return executionLogRepository
                 .findWithFilters(searchParam, successFilter, PageRequest.of(page, size))
